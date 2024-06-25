@@ -1,47 +1,40 @@
 package com.teamvietdev.qlhv.dao;
 
-import java.sql.Connection;
 import com.teamvietdev.qlhv.model.HocVien;
+import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author ASUS
- */
-public class HocVienDAOImpl implements HocVienDAO{
+public class HocVienDAOImpl implements HocVienDAO {
 
     @Override
     public List<HocVien> getList() {
+        Connection cons = DBConnect.getConnection();
+        String sql = "SELECT * FROM hoc_vien";
+        List<HocVien> list = new ArrayList<>();
         try {
-            Connection cons = DBConnect.getConnection();
-            String sql = "SELECT * FROM db_qlhv.hoc_vien";
-            List<HocVien> list = new ArrayList<>();
-            PreparedStatement ps = cons.prepareCall(sql);
+            PreparedStatement ps = (PreparedStatement) cons.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 HocVien hocVien = new HocVien();
                 hocVien.setMa_hoc_vien(rs.getInt("ma_hoc_vien"));
                 hocVien.setHo_ten(rs.getString("ho_ten"));
-                hocVien.setNgay_sinh(rs.getDate("ngay_sinh"));
                 hocVien.setSo_dien_thoai(rs.getString("so_dien_thoai"));
-                hocVien.setGioi_tinh(rs.getBoolean("gioi_tinh"));
                 hocVien.setDia_chi(rs.getString("dia_chi"));
-                hocVien.setTinh_trang(rs.getBoolean("tinh_trang"));                
+                hocVien.setNgay_sinh(rs.getDate("ngay_sinh"));
+                hocVien.setGioi_tinh(rs.getBoolean("gioi_tinh"));
+                hocVien.setTinh_trang(rs.getBoolean("tinh_trang"));
                 list.add(hocVien);
             }
             ps.close();
-            rs.close();
             cons.close();
-            return list;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null;
+        return list;
     }
     
     @Override
@@ -52,7 +45,7 @@ public class HocVienDAOImpl implements HocVienDAO{
             PreparedStatement ps = cons.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setInt(1, hocVien.getMa_hoc_vien());
             ps.setString(2, hocVien.getHo_ten());
-            ps.setDate(3, (java.sql.Date) new Date(hocVien.getNgay_sinh().getTime()));
+            ps.setDate(3, (Date) hocVien.getNgay_sinh());
             ps.setBoolean(4, hocVien.isGioi_tinh());
             ps.setString(5, hocVien.getSo_dien_thoai());
             ps.setString(6, hocVien.getDia_chi());
@@ -71,10 +64,5 @@ public class HocVienDAOImpl implements HocVienDAO{
         }
         return 0;
     }
-    
-    public static void main(String[] args) {
-        HocVienDAO hocVienDAO = new HocVienDAOImpl();
-        System.out.println(hocVienDAO.getList());
-    }
-    
+
 }

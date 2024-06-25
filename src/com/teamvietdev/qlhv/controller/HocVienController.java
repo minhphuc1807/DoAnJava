@@ -23,8 +23,8 @@ public class HocVienController {
     private JTextField jtfHoTen;
     private JDateChooser jdcNgaySinh;
     private JTextField jtfSoDienThoai;
-    private JRadioButton jtfGioiTinhNam;
-    private JRadioButton jtfGioiTinhNu;
+    private JRadioButton jrdNam;
+    private JRadioButton jrdNu;
     private JTextArea jtaDiaChi;
     private JCheckBox jcbKichHoat;
     private JLabel jlbMsg;
@@ -33,14 +33,14 @@ public class HocVienController {
 
     private HocVienService hocVienService = null;
     
-    public HocVienController(JButton btnSubmit, JTextField jtfMaHocVien, JTextField jtfHoTen, JDateChooser jdcNgaySinh, JRadioButton jtfGioiTinhNam, JRadioButton jtfGioiTinhNu, JTextField jtfSoDienThoai, JTextArea jtaDiaChi, JCheckBox jcbKichHoat, JLabel jlbMsg) {
+    public HocVienController(JButton btnSubmit, JTextField jtfMaHocVien, JTextField jtfHoTen, JDateChooser jdcNgaySinh, JRadioButton jrdNam, JRadioButton jrdNu, JTextField jtfSoDienThoai, JTextArea jtaDiaChi, JCheckBox jcbKichHoat, JLabel jlbMsg) {
         this.btnSubmit = btnSubmit;
         this.jtfMaHocVien = jtfMaHocVien;
         this.jtfHoTen = jtfHoTen;
         this.jdcNgaySinh = jdcNgaySinh;
         this.jtfSoDienThoai = jtfSoDienThoai;
-        this.jtfGioiTinhNam = jtfGioiTinhNam;
-        this.jtfGioiTinhNu = jtfGioiTinhNu;
+        this.jrdNam = jrdNam;
+        this.jrdNu = jrdNu;
         this.jtaDiaChi = jtaDiaChi;
         this.jcbKichHoat = jcbKichHoat;
         this.jlbMsg = jlbMsg;
@@ -55,9 +55,9 @@ public class HocVienController {
         jtfHoTen.setText(hocVien.getHo_ten());
         jdcNgaySinh.setDate(hocVien.getNgay_sinh());
         if (hocVien.isGioi_tinh()) {
-            jtfGioiTinhNam.setSelected(true);
+            jrdNam.setSelected(true);
         } else {
-            jtfGioiTinhNu.setSelected(true);
+            jrdNu.setSelected(true);
         }
         jtfSoDienThoai.setText(hocVien.getSo_dien_thoai());
         jtaDiaChi.setText(hocVien.getDia_chi());
@@ -71,14 +71,14 @@ public class HocVienController {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    if (jtfHoTen.getText().length() == 0 || jdcNgaySinh.getDate() == null) {
+                    if (!checkNotNull()) {
                         jlbMsg.setText("Vui lòng nhập dữ liệu bắt buộc!");
                     } else {
                         hocVien.setHo_ten(jtfHoTen.getText().trim());
                         hocVien.setNgay_sinh(covertDateToDateSql(jdcNgaySinh.getDate()));
                         hocVien.setSo_dien_thoai(jtfSoDienThoai.getText());
                         hocVien.setDia_chi(jtaDiaChi.getText());
-                        hocVien.setGioi_tinh(jtfGioiTinhNam.isSelected());
+                        hocVien.setGioi_tinh(jrdNam.isSelected());
                         hocVien.setTinh_trang(jcbKichHoat.isSelected());
                         if (showDialog()) {
                             int lastId = hocVienService.createOrUpdate(hocVien);

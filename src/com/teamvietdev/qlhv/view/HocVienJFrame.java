@@ -15,7 +15,7 @@ public class HocVienJFrame extends javax.swing.JFrame {
         HocVienController  controller = new HocVienController(btnSubmit, jtfMaHocVien,
                 jtfHoTen, jdcNgaySinh, jrdNam, jrdNu, jtfSoDienThoai, jtaDiaChi, jcbTinhTrang, jlbMsg);
         controller.setView(hocVien);
-        controller.setEvent();
+
     }
 
     /**

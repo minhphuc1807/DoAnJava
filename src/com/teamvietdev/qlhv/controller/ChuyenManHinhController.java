@@ -3,6 +3,7 @@ package com.teamvietdev.qlhv.controller;
 import com.teamvietdev.qlhv.bean.DanhMucBean;
 import com.teamvietdev.qlhv.view.HocVienJPanel;
 import com.teamvietdev.qlhv.view.KhoaHocJPanel;
+import com.teamvietdev.qlhv.view.LopHocJPanel;
 import com.teamvietdev.qlhv.view.ThongKeJPanel;
 import com.teamvietdev.qlhv.view.TrangChuJPanel;
 import java.awt.BorderLayout;
@@ -76,9 +77,8 @@ public class ChuyenManHinhController {
                 case "ThongKe":
                     node = new ThongKeJPanel();
                     break;
-                //more ....    
                 default:
-                    node = new TrangChuJPanel();
+                    node = new LopHocJPanel();
                     break;
             }
             root.removeAll();
